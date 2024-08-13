@@ -19,9 +19,9 @@ func main() {
         print("file not found")
         return
     }
-    print(markdown)
+    print(markdown!)
     print("\n") 
-    let html = parseMarkdown.parseMarkdown(markdown)
+    let html = parseMarkdown(markdown)
     path = path.replacingOccurrences(of: ".md", with: ".html")
     writeFile(html, path: path)
     print(html)

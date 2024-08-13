@@ -2,7 +2,7 @@ func parseMarkdown(_ markdown: String) -> String {
     var html = ""
 
     let lines = markdown.components(separatedBy: "\n")
-    let inList = false
+    var inList = false
 
     for line in lines {
         if inList && !line.hasPrefix("- ") && !line.hasPrefix("* ") {
@@ -11,33 +11,33 @@ func parseMarkdown(_ markdown: String) -> String {
         }
         if line.hasPrefix("# ") {
             html += "<h1>"
-            line = line.replacingOccurrences(of: "# ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "# ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h1>"
         } else if line.hasPrefix("## ") {
             html += "<h2>"
-            line = line.replacingOccurrences(of: "## ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "## ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h2>"
         } else if line.hasPrefix("### ") {
             html += "<h3>"
-            line = line.replacingOccurrences(of: "### ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "### ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h3>"
         } else if line.hasPrefix("#### ") {
             html += "<h4>"
-            line = line.replacingOccurrences(of: "#### ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "#### ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h4>"
         } else if line.hasPrefix("##### ") {
             html += "<h5>"
-            line = line.replacingOccurrences(of: "##### ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "##### ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h5>"
         } else if line.hasPrefix("###### ") {
             html += "<h6>"
-            line = line.replacingOccurrences(of: "###### ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "###### ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</h6>"
         } else if line.hasPrefix("* ") {
             if !inList {
@@ -45,8 +45,8 @@ func parseMarkdown(_ markdown: String) -> String {
                 inList = true
             }
             html += "<li>"
-            line = line.replacingOccurrences(of: "* ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "* ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</li>"
         } else if line.hasPrefix("- ") {
             if !inList {
@@ -54,8 +54,8 @@ func parseMarkdown(_ markdown: String) -> String {
                 inList = true
             }
             html += "<li>"
-            line = line.replacingOccurrences(of: "- ", with: "")
-            html += parseMarkdownLine(line)
+            let lline = line.replacingOccurrences(of: "- ", with: "")
+            html += parseMarkdownLine(lline)
             html += "</li>"
         }
     }
