@@ -63,6 +63,51 @@ func parseMarkdown(_ markdown: String) -> String {
 
 }
 
+enum MarkdownOperator{
+    case bold
+    case italic
+    case underline
+    case strikethrough
+    //case code
+
+    var info: (md: String, tag: String) {
+        switch self {
+            case .bold:
+                return("**", "b")
+            case .italic:
+                return("*", "i")
+            case .underline:
+                return("__", "u")
+            case .strikethrough:
+                return("~~", "s")
+            //case .code:
+            //return("`", "code")
+        }
+    }
+}
+
 func parseMarkdownLine(_ line: String) -> String {
-    return line
+    var lline = line
+    let dict = [MarkdownOperator.bold: false, MarkdownOperator.italic: false, MarkdownOperator.underline: false, MarkdownOperator.strikethrough: false]
+    for i in lline.indices {
+        for op in MarkdownOperator.allCases {
+            let (md, tag) = op.info
+            if(md.count > 1) {
+                if lline[i] + lline[lline.index(after: i)] == md {
+                    lline.remove(at: lline.index(after: i))
+                    lline.remove(at: i)
+                    lline.insert(contentsOf: "<" + (dict[op] ? "/" : "") + tag + ">", at: i)
+                    dict[op] = !dict[op]
+                }
+            } else {
+                if lline[i] == md {
+                    lline.remove(at: i)
+                    lline.insert(contentsOf: "<" + (dict[op] ? "/" : "") + tag + ">", at: i)
+                    dict[op] = !dict[op]
+                }
+            }
+        }
+    }
+    
+    return lline
 }
