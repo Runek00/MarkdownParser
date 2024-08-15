@@ -13,7 +13,7 @@ func writeFile(_ content: String, path: String) {
 
 func main() {
     print("Give me the path to the markdown file")
-    let path = readLine()!
+    var path = readLine()!
     let markdown = readFile(path)
     if markdown == nil {
         print("file not found")
@@ -21,7 +21,7 @@ func main() {
     }
     print(markdown!)
     print("\n") 
-    let html = parseMarkdown(markdown)
+    let html = parseMarkdown(markdown!)
     path = path.replacingOccurrences(of: ".md", with: ".html")
     writeFile(html, path: path)
     print(html)

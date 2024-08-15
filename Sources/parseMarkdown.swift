@@ -57,13 +57,16 @@ func parseMarkdown(_ markdown: String) -> String {
             let lline = line.replacingOccurrences(of: "- ", with: "")
             html += parseMarkdownLine(lline)
             html += "</li>"
+        } else {
+            html += parseMarkdownLine(line)
         }
+        html += "\n"
     }
     return html
 
 }
 
-enum MarkdownOperator{
+enum MarkdownOperator: CaseIterable {
     case bold
     case italic
     case underline
@@ -88,22 +91,25 @@ enum MarkdownOperator{
 
 func parseMarkdownLine(_ line: String) -> String {
     var lline = line
-    let dict = [MarkdownOperator.bold: false, MarkdownOperator.italic: false, MarkdownOperator.underline: false, MarkdownOperator.strikethrough: false]
+    var dict = [MarkdownOperator.bold: false, MarkdownOperator.italic: false, MarkdownOperator.underline: false, MarkdownOperator.strikethrough: false]
     for i in lline.indices {
         for op in MarkdownOperator.allCases {
             let (md, tag) = op.info
             if(md.count > 1) {
-                if lline[i] + lline[lline.index(after: i)] == md {
+                if lline.index(after: i) == lline.endIndex { continue }
+                if String(lline[i]) + String(lline[lline.index(after: i)]) == md {
                     lline.remove(at: lline.index(after: i))
                     lline.remove(at: i)
-                    lline.insert(contentsOf: "<" + (dict[op] ? "/" : "") + tag + ">", at: i)
-                    dict[op] = !dict[op]
+                    let open = dict[op]!
+                    lline.insert(contentsOf: "<" + (open ? "/" : "") + tag + ">", at: i)
+                    dict[op] = !open
                 }
             } else {
-                if lline[i] == md {
+                if String(lline[i]) == md {
                     lline.remove(at: i)
-                    lline.insert(contentsOf: "<" + (dict[op] ? "/" : "") + tag + ">", at: i)
-                    dict[op] = !dict[op]
+                    let open = dict[op]!
+                    lline.insert(contentsOf: "<" + (open ? "/" : "") + tag + ">", at: i)
+                    dict[op] = !open
                 }
             }
         }
