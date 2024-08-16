@@ -1,5 +1,5 @@
 func parseMarkdown(_ markdown: String) -> String {
-    var html = ""
+    var html = "<html>"
 
     let lines = markdown.components(separatedBy: "\n")
     var inList = false
@@ -62,6 +62,7 @@ func parseMarkdown(_ markdown: String) -> String {
         }
         html += "\n"
     }
+    html += "</html>"
     return html
 
 }
